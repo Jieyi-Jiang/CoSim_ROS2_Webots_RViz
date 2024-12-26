@@ -1,0 +1,219 @@
+#VRML_SIM R2023b utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/floors/protos/CircleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/samples/robotbenchmark/maze_runner/protos/MazeBlock.proto"
+
+WorldInfo {
+}
+Viewpoint {
+  orientation -0.30837392006292524 0.8202000033299617 0.4818479842881523 1.0332921901833914
+  position -3.357385039072083 -2.3352856339830215 5.325541621386069
+  follow "my_robot"
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+CircleArena {
+  radius 1.5
+  wallHeight 0.8
+}
+MazeBlock {
+  translation -0.547956 0.594861 -4.44089e-16
+  length 0.4
+}
+MazeBlock {
+  translation -0.314617 -0.726446 -4.44089e-16
+  rotation 0 0 1 0.7853996938995746
+  name "maze block(1)"
+  length 0.4
+}
+MazeBlock {
+  translation 0.662949 0.00368488 0
+  name "maze block(4)"
+  length 0.4
+}
+MazeBlock {
+  translation 0.548492 -0.871868 -4.44089e-16
+  rotation 0 0 1 -1.3089953071795861
+  name "maze block(2)"
+  length 0.4
+}
+MazeBlock {
+  translation 0.35066 0.869375 0
+  rotation 0 0 1 1.5707996938995747
+  name "maze block(3)"
+  length 0.4
+}
+Robot {
+  children [
+    Accelerometer {
+      name       "accelerometer" # used by wb_robot_get_device()
+      translation 0 0 0.1
+      lookupTable [ ]             # lookup table
+      xAxis       TRUE            # {TRUE, FALSE}
+      yAxis       TRUE            # {TRUE, FALSE}
+      zAxis       TRUE            # {TRUE, FALSE}
+      resolution  -1              # [0, inf)
+    }
+    Gyro {
+      name "gyro"
+      translation 0 0 0.1
+      lookupTable [ ]    # lookup table
+      xAxis       TRUE   # {TRUE, FALSE}
+      yAxis       TRUE   # {TRUE, FALSE}
+      zAxis       TRUE   # {TRUE, FALSE}
+      resolution  -1     # {-1, [0, inf)}
+    }
+    Lidar {
+      name "lidar"
+      translation 0 0 0.1
+      tiltAngle            0.0           # [-pi/2, pi/2]
+      horizontalResolution 4096           # [0, inf)
+      fieldOfView          6.28        # [0, 2*pi]
+      verticalFieldOfView  0.3           # [0, pi]
+      numberOfLayers       20             # [0, inf)
+      near                 0.01          # [0, inf)
+      minRange             0.1          # [near, inf)
+      maxRange             4.0           # [minRange, inf)
+      type                 "fixed"       # {"fixed", "rotating"}
+      projection           "cylindrical" # {"planar", "cylindrical"}
+      noise                0.0           # [0, inf)
+      resolution           -1.0          # {-1, [0, inf)}
+      defaultFrequency     25            # [minFrequency, maxFrequency]
+      minFrequency         20             # [0, maxFrequency)
+      maxFrequency         30            # [minFrequency, inf)
+      rotatingHead         NULL          # {Solid (or derived), PROTO}
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 1 0
+        anchor 0 0 0.025
+      }
+      device [
+        RotationalMotor {
+          name "left wheel motor"
+        }
+      ]
+      endPoint Solid {
+        translation 0 0.045 0.025
+        children [
+          DEF WHEEL Pose {
+            rotation 1 0 0 1.5707996938995747
+            children [
+              Shape {
+                appearance PBRAppearance {
+                  baseColor 1 0 0
+                  roughness 1
+                  metalness 0
+                }
+                geometry Cylinder {
+                  height 0.01
+                  radius 0.025
+                }
+              }
+            ]
+          }
+        ]
+        name "left wheel"
+        boundingObject USE WHEEL
+        physics Physics {
+        }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 1 0
+        anchor 0 0 0.025
+      }
+      device [
+        RotationalMotor {
+          name "right wheel motor"
+        }
+      ]
+      endPoint Solid {
+        translation 0 -0.045 0.025
+        children [
+          USE WHEEL
+        ]
+        name "right wheel"
+        boundingObject USE WHEEL
+        physics Physics {
+        }
+      }
+    }
+    Pose {
+      translation 0 0 0.0415
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+            roughness 1
+            metalness 0
+          }
+          geometry DEF BODY Cylinder {
+            height 0.08
+            radius 0.045
+          }
+        }
+      ]
+    }
+    DistanceSensor {
+      translation 0.042 0.02 0.063
+      rotation 0 0 1 0.5236003061004253
+      children [
+        DEF SENSOR Pose {
+          rotation 0 1 0 1.5708
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 1 1 0
+                roughness 1
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.004
+                radius 0.008
+              }
+            }
+          ]
+        }
+      ]
+      name "ds0"
+      lookupTable [
+        0 1020 0
+        0.05 1020 0
+        0.15 0 0
+      ]
+      numberOfRays 2
+      aperture 1
+    }
+    DistanceSensor {
+      translation 0.042 -0.02 0.063
+      rotation 0 0 1 -0.5235996938995747
+      children [
+        USE SENSOR
+      ]
+      name "ds1"
+      lookupTable [
+        0 1020 0
+        0.05 1020 0
+        0.15 0 0
+      ]
+      numberOfRays 2
+      aperture 1
+    }
+  ]
+  name "my_robot"
+  boundingObject Pose {
+    translation 0 0 0.0415
+    children [
+      USE BODY
+    ]
+  }
+  physics Physics {
+  }
+  controller "<extern>"
+}

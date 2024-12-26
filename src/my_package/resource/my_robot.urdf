@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<robot name="My robot">
+    <webots>
+        <device reference="ds0" type="DistanceSensor">
+            <ros>
+                <topicName>/left_sensor</topicName>
+                <alwaysOn>true</alwaysOn>
+            </ros>
+        </device>
+        <device reference="ds1" type="DistanceSensor">
+            <ros>
+                <topicName>/right_sensor</topicName>
+                <alwaysOn>true</alwaysOn>
+            </ros>
+        </device>
+        <device reference="lidar" type="Lidar">
+            <ros>
+                <topicName>/webots_lidar</topicName>
+                <alwaysOn>true</alwaysOn>
+                <enabled>true</enabled>
+                <updateRate>25</updateRate>
+                <frameName>map</frameName>
+            </ros>
+        </device>
+        <plugin type="my_robot_driver::MyRobotDriver" />
+    </webots>
+</robot>
