@@ -5,14 +5,20 @@
             <ros>
                 <topicName>/left_sensor</topicName>
                 <alwaysOn>true</alwaysOn>
+                <enabled>true</enabled>
+                <frameName>map</frameName>
             </ros>
         </device>
+
         <device reference="ds1" type="DistanceSensor">
             <ros>
                 <topicName>/right_sensor</topicName>
                 <alwaysOn>true</alwaysOn>
+                <enabled>true</enabled>
+                <frameName>map</frameName>
             </ros>
         </device>
+
         <device reference="lidar" type="Lidar">
             <ros>
                 <topicName>/webots_lidar</topicName>
@@ -22,6 +28,18 @@
                 <frameName>map</frameName>
             </ros>
         </device>
+        
+        <plugin type="webots_ros2_driver::Ros2IMU">
+            <enabled>true</enabled>
+            <updateRate>20</updateRate>
+            <topicName>/imu</topicName>
+            <alwaysOn>true</alwaysOn>
+            <frameName>imu_link</frameName>
+            <inertialUnitName>inertial_unit</inertialUnitName>
+            <gyroName>gyro</gyroName>
+            <accelerometerName>accelerometer</accelerometerName>
+        </plugin>
+
         <plugin type="my_robot_driver::MyRobotDriver" />
     </webots>
 </robot>

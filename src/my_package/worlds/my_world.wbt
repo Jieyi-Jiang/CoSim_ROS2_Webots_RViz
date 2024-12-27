@@ -49,6 +49,14 @@ MazeBlock {
 }
 Robot {
   children [
+    InertialUnit {
+      name "inertial_unit"
+      xAxis       TRUE   # {TRUE, FALSE}
+      zAxis       TRUE   # {TRUE, FALSE}
+      yAxis       TRUE   # {TRUE, FALSE}
+      resolution  -1     # {-1, [0, inf)}
+      noise       0      # {0, [0, 1)}
+    } 
     Accelerometer {
       name       "accelerometer" # used by wb_robot_get_device()
       translation 0 0 0.1
