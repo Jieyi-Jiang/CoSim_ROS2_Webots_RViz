@@ -13,33 +13,63 @@ find_package(geometry_msgs REQUIRED)
 find_package(pluginlib REQUIRED)
 find_package(webots_ros2_driver REQUIRED)
 find_package(sensor_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
+find_package(tf2 REQUIRED)
+find_package(tf2_ros REQUIRED)
 
 # Export the plugin configuration file
 pluginlib_export_plugin_description_file(webots_ros2_driver my_robot_driver.xml)
+
+# kinematics
+include_directories(
+  include/my_package
+)
+# add_library(
+#   kinematics
+#   SHARED
+#   src/Kinematics.cpp
+# )
+# install(TARGETS
+#   kinematics
+#   DESTINATION lib/${PROJECT_NAME}
+# )
+# install(
+#   DIRECTORY include/
+#   DESTINATION include
+# )
 
 # MyRobotDriver library
 add_library(
   ${PROJECT_NAME}
   SHARED
   src/MyRobotDriver.cpp
+  src/Kinematics.cpp
 )
+
 target_include_directories(
   ${PROJECT_NAME}
   PRIVATE
   include
 )
+
 ament_target_dependencies(
   ${PROJECT_NAME}
   pluginlib
   rclcpp
   webots_ros2_driver
+  sensor_msgs
+  nav_msgs
+  tf2
+  tf2_ros
 )
+
 install(TARGETS
   ${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
 )
+
 # Install additional directories.
 install(DIRECTORY
   launch
