@@ -27,6 +27,7 @@ namespace my_robot
                   std::unordered_map<std::string, std::string> &parameters) override;
         friend void odom_pulisher(MyRobotDriver *driver);
         friend void footprint_pulisher(MyRobotDriver *driver);
+        friend void map_to_odom_pulisher(MyRobotDriver *driver);
 
     private:
         /// @brief Callback function for cmd_vel topic
@@ -38,6 +39,7 @@ namespace my_robot
         geometry_msgs::msg::Twist cmd_vel_msg;
         std::unique_ptr<tf2_ros::TransformBroadcaster> tf_odom;
         std::unique_ptr<tf2_ros::TransformBroadcaster> tf_base_footprint;
+        std::unique_ptr<tf2_ros::TransformBroadcaster> tf_map_to_odom;
 
         // Robot *robot;
         WbDeviceTag leftMotor;

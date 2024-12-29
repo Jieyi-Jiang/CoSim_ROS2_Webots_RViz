@@ -86,7 +86,25 @@ namespace my_robot
         transform.transform.rotation.y = 0.0;
         transform.transform.rotation.z = 0.0;
         transform.transform.rotation.w = 1.0;
-        driver->tf_odom->sendTransform(transform);}
+        driver->tf_odom->sendTransform(transform);
+    }
+
+    void map_to_odom_pulisher(MyRobotDriver *driver)
+    {
+        geometry_msgs::msg::TransformStamped transform;
+        double seconds = driver->robot_node->now().seconds();
+        transform.header.stamp = rclcpp::Time(static_cast<uint64_t>(seconds * 1e9));
+        transform.header.frame_id = "map";
+        transform.child_frame_id = "odom";
+        transform.transform.translation.x = 0.0;
+        transform.transform.translation.y = 0.0;
+        transform.transform.translation.z = 0.0;
+        transform.transform.rotation.x = 0.0;
+        transform.transform.rotation.y = 0.0;
+        transform.transform.rotation.z = 0.0;
+        transform.transform.rotation.w = 1.0;
+        driver->tf_odom->sendTransform(transform);
+    }
 
     void MyRobotDriver::cmdVelCallback(const geometry_msgs::msg::Twist::SharedPtr msg)
     {
@@ -114,13 +132,14 @@ namespace my_robot
         robot_kin.kin_update_ticks(wb_robot_get_time());
         robot_kin.kin_updata_odom();
         odom_pulisher(this);
-        static int footprint_count = 0;
-        if (footprint_count >= 20)
+        static int publish_cnt = 0;
+        if (publish_cnt >= 20)
         {
             footprint_pulisher(this);
-            footprint_count = 0;
+            map_to_odom_pulisher(this);
+            publish_cnt = 0;
         }
-        footprint_count += 1;
+        publish_cnt += 1;
     }
 } // namespace my_robot_driver
 

@@ -33,7 +33,9 @@ def generate_launch_description():
         executable='robot_state_publisher',
         output='screen',
         parameters=[
-            {'robot_description': '<robot name=""><link name=""/></robot>'}
+            {'robot_description': '<robot name=""><link name=""/></robot>',
+              'use_sim_time': use_sim_time,
+             }
         ],
     )
 
@@ -53,12 +55,13 @@ def generate_launch_description():
         output='screen',
         condition=launch.conditions.IfCondition(use_slam_toolbox)
     )
+    
     return LaunchDescription([
         webots,
         my_robot_driver,
         robot_state_publisher,
         # footprint_publisher,
-        slam_toolbox,
+        # slam_toolbox,
         launch.actions.RegisterEventHandler(
             event_handler=launch.event_handlers.OnProcessExit(
                 target_action=webots,
